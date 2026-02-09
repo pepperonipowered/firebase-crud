@@ -15,6 +15,7 @@ declare module "@tanstack/react-router" {
 }
 
 function App() {
+    
     return (
         <RouterProvider router={router} />
         // <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

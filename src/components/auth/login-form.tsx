@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 
-import { auth } from "./../../../config/firebase.ts";
+import { auth } from "@/config/firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
