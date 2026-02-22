@@ -11,32 +11,46 @@ import {
 import { Input } from "@/components/ui/input";
 
 import { auth } from "./../../../config/firebase.ts";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import { loginSchema } from "@/lib/schema/login-schema.ts";
 import type z from "zod";
+import { useNavigate, useSearch } from "@tanstack/react-router";
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<"form">) {
+    const navigate = useNavigate();
+    const search = useSearch({ from: "/_auth-layout/login" });
+
     const login = async ({ email, password }: z.infer<typeof loginSchema>) => {
-        await createUserWithEmailAndPassword(auth, email, password);
-        toast("You submitted the following values:", {
-            description: (
-                <pre className="bg-code text-foreground mt-2 w-[320px] overflow-x-auto rounded-md p-4">
-                    <code>{JSON.stringify({ email, password }, null, 2)}</code>
-                </pre>
-            ),
-            position: "bottom-right",
-            classNames: {
-                content: "flex flex-col gap-2",
-            },
-            style: {
-                "--border-radius": "calc(var(--radius)  + 4px)",
-            } as React.CSSProperties,
-        });
+        try {
+            await signInWithEmailAndPassword(auth, email, password);
+            toast.success("Logged in successfully!");
+            // redirect back to where they came from, or dashboard
+            navigate({ to: search.redirect ?? "/dashboard" });
+        } catch (error: any) {
+            const messages: Record<string, string> = {
+                "auth/user-not-found": "No account found with this email.",
+                "auth/wrong-password": "Incorrect password.",
+                "auth/invalid-credential": "Invalid email or password.",
+                "auth/too-many-requests": "Too many attempts. Try again later.",
+            };
+            toast.error(
+                messages[error.code] ?? "Login failed. Please try again.",
+            );
+        }
+    };
+
+    const loginWithGoogle = async () => {
+        try {
+            await signInWithPopup(auth, new GoogleAuthProvider());
+            navigate({ to: search.redirect ?? "/dashboard" });
+        } catch (error: any) {
+            toast.error("Google sign-in failed. Please try again.");
+        }
     };
 
     const loginForm = useForm({
@@ -150,7 +164,7 @@ export function LoginForm({
                 </Field>
                 <FieldSeparator>Or continue with</FieldSeparator>
                 <Field>
-                    <Button variant="outline" type="button">
+                    <Button variant="outline" type="button" onClick={loginWithGoogle}>
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
