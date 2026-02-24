@@ -31,6 +31,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Breadcrumbs } from "./breadcrumbs";
 import UserMenuContent from "./user-menu-content";
+import AppLogo from "./app-logo";
 
 const mainNavItems: NavItem[] = [
     {
@@ -83,7 +84,6 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     Navigation Menu
                                 </SheetTitle>
                                 <SheetHeader className="flex justify-start text-left">
-                                    {/* <AppLogoIcon className="h-6 w-6 fill-current text-black dark:text-white" /> */}{" "}
                                     GIP
                                 </SheetHeader>
                                 <div className="flex h-full flex-1 flex-col space-y-4 p-4">
@@ -135,7 +135,7 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                         to="/dashboard"
                         className="flex items-center space-x-2"
                     >
-                        {/* <AppLogo /> */} Logo
+                        <AppLogo />
                     </Link>
 
                     {/* Desktop Navigation */}

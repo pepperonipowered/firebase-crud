@@ -17,6 +17,7 @@
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-form": "^1.27.7",
     "@tanstack/react-router": "^1.157.8",
+    "@tanstack/react-table": "^8.21.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "firebase": "^12.8.0",
