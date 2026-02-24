@@ -1,4 +1,3 @@
-import React from "react";
 import type { BreadcrumbItem, NavItem } from "@/types";
 import { ChartArea, CircleQuestionMark, LayoutGrid, Menu, Search } from "lucide-react";
 import {
@@ -31,6 +30,7 @@ import {
 } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Breadcrumbs } from "./breadcrumbs";
+import UserMenuContent from "./user-menu-content";
 
 const mainNavItems: NavItem[] = [
     {
@@ -234,8 +234,7 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 </Button>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent className="w-56" align="end">
-                                {/* <UserMenuContent user={auth.user} /> */}{" "}
-                                todo later
+                                <UserMenuContent />
                             </DropdownMenuContent>
                         </DropdownMenu>
                     </div>

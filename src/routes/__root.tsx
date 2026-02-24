@@ -1,9 +1,18 @@
 import * as React from "react";
-import { Outlet, createRootRoute } from "@tanstack/react-router";
+import { Outlet, createRootRoute, createRootRouteWithContext } from "@tanstack/react-router";
+import type { User } from "firebase/auth";
 
-export const Route = createRootRoute({
+interface RouterContext {
+    user: User | null;
+    loading: boolean;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
     component: RootComponent,
 });
+
+
+
 
 function RootComponent() {
     return (

@@ -1,7 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { auth } from "../../config/firebase";
-import { signOut } from "firebase/auth";
-import { toast } from "sonner";
+import { createFileRoute } from "@tanstack/react-router";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import { database } from "@/config/firebase";
 
@@ -10,16 +7,6 @@ export const Route = createFileRoute("/_app-layout/dashboard")({
 });
 
 function RouteComponent() {
-    const navigate = useNavigate();
-
-    const logout = async () => {
-        try {
-            await signOut(auth);
-            navigate({ to: "/login" });
-        } catch {
-            toast.error("Failed to log out. Please try again.");
-        }
-    };
     
     async function addTestDoc() {
         try {
@@ -151,7 +138,6 @@ function RouteComponent() {
     return (
         <div>
             <h1>Hello "/dashboard"!</h1>
-            <button onClick={logout}>Logout</button>
         </div>
     );
 }
