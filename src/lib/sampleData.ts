@@ -3,6 +3,7 @@ import { Timestamp } from "firebase/firestore";
 
 export const sampleApplicant: Applicant[] = [
     {
+        id: "1",
         personalInformation: {
             firstName: "Juan",
             middleName: "Dela",
@@ -117,6 +118,7 @@ export const sampleApplicant: Applicant[] = [
         remarks: "Performing well, eligible for extension.",
     },
     {
+        id: "2",
         personalInformation: {
             firstName: "Pedro",
             middleName: "Fernando",
@@ -231,3 +233,20 @@ export const sampleApplicant: Applicant[] = [
         remarks: "Performing well, eligible for extension.",
     },
 ];
+
+export const sampleApplicantFlattened = sampleApplicant.map((a, index) => ({
+    id: index.toString(),
+    firstName: a.personalInformation.firstName,
+    middleName: a.personalInformation.middleName,
+    lastName: a.personalInformation.lastName,
+    fullName: `${a.personalInformation.firstName} ${a.personalInformation.middleName} ${a.personalInformation.lastName}`,
+    address: a.personalInformation.address,
+    birthDate:
+        a.personalInformation.birthDate?.toDate().toLocaleDateString() ?? "",
+    age: a.personalInformation.age,
+    gender: a.personalInformation.gender,
+    civilStatus: a.personalInformation.civilStatus,
+    phoneNumber: a.personalInformation.phoneNumber,
+    landlineNumber: a.personalInformation.landlineNumber,
+    email: a.personalInformation.email,
+}));
