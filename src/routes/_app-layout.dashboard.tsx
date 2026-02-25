@@ -139,8 +139,7 @@ function RouteComponent() {
     // }
 
     return (
-        <div>
-            <h1>Hello "/dashboard"!</h1>
+        <div className="max-w-7xl mx-auto w-full my-16">
             <DataTable columns={columns} data={sampleApplicant} />
         </div>
     );

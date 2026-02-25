@@ -19,5 +19,11 @@ export default defineConfig([
       ecmaVersion: 2020,
       globals: globals.browser,
     },
+    plugins: {
+      "react-compiler": reactCompiler,
+    },
+    rules: {
+      "react-compiler/react-compiler": "warn",
+    }
   },
 ])
