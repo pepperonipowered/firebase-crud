@@ -1,5 +1,11 @@
 import type { BreadcrumbItem, NavItem } from "@/types";
-import { ChartArea, CircleQuestionMark, LayoutGrid, Menu, Search } from "lucide-react";
+import {
+    ChartArea,
+    CircleQuestionMark,
+    LayoutGrid,
+    Menu,
+    Search,
+} from "lucide-react";
 import {
     Sheet,
     SheetContent,
@@ -32,6 +38,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Breadcrumbs } from "./breadcrumbs";
 import UserMenuContent from "./user-menu-content";
 import AppLogo from "./app-logo";
+import { ModeToggle } from "./mode-toggle";
 
 const mainNavItems: NavItem[] = [
     {
@@ -49,7 +56,7 @@ const mainNavItems: NavItem[] = [
 const rightNavItems: NavItem[] = [
     {
         title: "Help",
-        href: "https://github.com/laravel/react-starter-kit",
+        href: "/dashboard",
         icon: CircleQuestionMark,
     },
 ];
@@ -190,9 +197,8 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                     >
                                         <Tooltip>
                                             <TooltipTrigger>
-                                                <a
-                                                    href={item.href}
-                                                    target="_blank"
+                                                <Link
+                                                    to={item.href}
                                                     rel="noopener noreferrer"
                                                     className="group ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                                                 >
@@ -205,7 +211,7 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                                             className="size-5 opacity-80 group-hover:opacity-100"
                                                         />
                                                     )}
-                                                </a>
+                                                </Link>
                                             </TooltipTrigger>
                                             <TooltipContent>
                                                 <p>{item.title}</p>
@@ -237,6 +243,7 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <UserMenuContent />
                             </DropdownMenuContent>
                         </DropdownMenu>
+                        <ModeToggle />
                     </div>
                 </div>
             </div>
