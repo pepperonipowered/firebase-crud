@@ -38,6 +38,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Breadcrumbs } from "./breadcrumbs";
 import UserMenuContent from "./user-menu-content";
 import AppLogo from "./app-logo";
+import { ModeToggle } from "./mode-toggle";
 
 const mainNavItems: NavItem[] = [
     {
@@ -198,7 +199,6 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             <TooltipTrigger>
                                                 <Link
                                                     to={item.href}
-                                                    
                                                     rel="noopener noreferrer"
                                                     className="group ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium text-accent-foreground ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"
                                                 >
@@ -243,6 +243,7 @@ function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                 <UserMenuContent />
                             </DropdownMenuContent>
                         </DropdownMenu>
+                        <ModeToggle />
                     </div>
                 </div>
             </div>

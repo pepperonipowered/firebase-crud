@@ -13,8 +13,15 @@ export default defineConfig({
         }),
         react({
             babel: {
-                plugins: ["babel-plugin-react-compiler"],
-            }
+                plugins: [
+                    [
+                        "babel-plugin-react-compiler",
+                        {
+                            compilationMode: "annotation", // only compiles files with 'use memo'
+                        },
+                    ],
+                ],
+            },
         }),
         tailwindcss(),
     ],
