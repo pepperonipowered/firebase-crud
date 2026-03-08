@@ -129,4 +129,20 @@
     body {
         @apply bg-background text-foreground;
     }
+    th[data-pinned],
+    td[data-pinned] {
+        @apply bg-background;
+        @apply bg-background transition-colors;
+    }
+    tr:hover th[data-pinned],
+    tr:hover td[data-pinned] {
+        background-color: color-mix(
+            in oklch,
+            var(--muted) 90%,
+            var(--background)
+        );
+    }
+    tr[data-state="selected"] td[data-pinned] {
+        @apply bg-muted;
+    }
 }

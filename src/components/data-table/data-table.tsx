@@ -71,15 +71,14 @@ function getPinnedStyles(column: any, isHeader = false): React.CSSProperties {
         left: pin === "left" ? column.getStart("left") : undefined,
         right: pin === "right" ? column.getAfter("right") : undefined,
         zIndex: isHeader ? 20 : 10,
-        backgroundColor: "hsl(var(--background))", // ✅ use backgroundColor, not background
         // ✅ Replace divide-x with explicit borders on pinned columns
-        borderRight: isLastLeft ? "1px solid hsl(var(--border))" : undefined,
-        borderLeft: isFirstRight ? "1px solid hsl(var(--border))" : undefined,
+        borderRight: isLastLeft ? "1px solid var(--border)" : undefined,
+        borderLeft: isFirstRight ? "1px solid var(--border)" : undefined,
         // Optional shadow for visual depth
         boxShadow: isLastLeft
-            ? "4px 0 4px -2px hsl(var(--border))"
+            ? "4px 0 4px -2px var(--border)"
             : isFirstRight
-              ? "-4px 0 4px -2px hsl(var(--border))"
+              ? "-4px 0 4px -2px var(--border)"
               : undefined,
     };
 }
@@ -97,7 +96,7 @@ function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
         isDragging,
     } = useSortable({
         id: header.column.id,
-        disabled: isActions, // Disable dragging for the "actions" column
+        disabled: isActions || !!header.column.getIsPinned(), // Disable dragging for the "actions" column
     });
 
     const style: React.CSSProperties = {
@@ -121,6 +120,7 @@ function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
         <TableHead
             ref={setNodeRef}
             style={style}
+            data-pinned={header.column.getIsPinned() || undefined}
             className="select-none overflow-hidden"
         >
             <div className="flex items-center gap-1 w-full">
@@ -168,7 +168,7 @@ export function DataTable<TData, TValue>({
 
     const [columnPinning, setColumnPinning] =
         React.useState<ColumnPinningState>({
-            left: ["actions", "firstName"],
+            left: ["actions", ""],
             right: [],
         });
 
@@ -287,19 +287,23 @@ export function DataTable<TData, TValue>({
                     </DropdownMenu>
                 </div>
                 <div className="overflow-x-auto rounded-md border">
-                    <Table className="min-w-full table-fixed">
+                    <Table className="min-w-full table-fixed border-separate border-spacing-0 [&_th]:border-b [&_th]:border-r [&_th:last-child]:border-r-0 [&_td]:border-b [&_td]:border-r [&_td:last-child]:border-r-0 [&_tr:last-child_td]:border-b-0">
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <SortableContext
                                     key={headerGroup.id}
-                                    items={columnOrder.filter(
-                                        (id) => id !== "actions",
-                                    )}
+                                    items={columnOrder.filter((id) => {
+                                        const col = table.getColumn(id);
+                                        return (
+                                            id !== "actions" &&
+                                            !col?.getIsPinned()
+                                        );
+                                    })}
                                     strategy={horizontalListSortingStrategy}
                                 >
                                     <TableRow
                                         key={headerGroup.id}
-                                        className="divide-x w-full"
+                                        className="w-full"
                                     >
                                         {headerGroup.headers.map((header) => (
                                             <SortableHeader
@@ -330,6 +334,10 @@ export function DataTable<TData, TValue>({
                                                         false,
                                                     ),
                                                 }}
+                                                data-pinned={
+                                                    cell.column.getIsPinned() ||
+                                                    undefined
+                                                }
                                             >
                                                 {flexRender(
                                                     cell.column.columnDef.cell,
