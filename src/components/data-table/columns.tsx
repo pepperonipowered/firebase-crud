@@ -10,8 +10,36 @@ import {
 } from "../ui/dropdown-menu";
 import { Button } from "../ui/button";
 import { MoreHorizontal } from "lucide-react";
+import { Checkbox } from "../ui/checkbox";
 
 export const columns: ColumnDef<Applicant>[] = [
+    {
+        id: "select",
+        header: ({ table }) => (
+            <Checkbox
+                checked={
+                    table.getIsAllPageRowsSelected() ||
+                    (table.getIsSomePageRowsSelected() && "indeterminate")
+                }
+                onCheckedChange={(value) =>
+                    table.toggleAllPageRowsSelected(!!value)
+                }
+                aria-label="Select all"
+            />
+        ),
+        cell: ({ row }) => (
+            <Checkbox
+                checked={row.getIsSelected()}
+                onCheckedChange={(value) => row.toggleSelected(!!value)}
+                aria-label="Select row"
+            />
+        ),
+        size: 18, // 👈 small fixed width
+        minSize: 18,
+        maxSize: 18,
+        enableSorting: false,
+        enableHiding: false,
+    },
     {
         id: "actions",
         cell: ({ row }) => {
@@ -43,79 +71,89 @@ export const columns: ColumnDef<Applicant>[] = [
                 </DropdownMenu>
             );
         },
-        size: 48, // 👈 small fixed width
-        minSize: 48,
-        maxSize: 48,
+        size: 27, // 👈 small fixed width
+        minSize: 27,
+        maxSize: 27,
         enableColumnFilter: false,
         enableResizing: false,
         enableHiding: false,
     },
     {
-        id: "firstName",
-        header: "First name",
-        accessorFn: (row) => row.personalInformation.firstName,
+        id: "fullName",
+        header: "Full name",
+        accessorFn: (row) =>
+            `${row.personalInformation.firstName} ${row.personalInformation.lastName}`,
         meta: {
-            label: "First name",
-            cell: {
-                variant: "short-text",
-            },
+            label: "Full name",
         },
     },
     {
-        id: "middleName",
-        header: "Middle name",
-        accessorFn: (row) => row.personalInformation.middleName,
+        id: "gipId",
+        header: "GIP ID",
+        accessorFn: (row) => row.gipId,
+        meta: { label: "GIP ID" },
     },
     {
-        id: "lastName",
-        header: "Last name",
-        accessorFn: (row) => row.personalInformation.lastName,
+        id: "remarks",
+        header: "Remarks",
+        accessorFn: (row) => row.remarks,
+        meta: { label: "Remarks" },
     },
-    {
-        id: "address",
-        header: "Address",
-        accessorFn: (row) => row.personalInformation.address,
-    },
-    {
-        id: "birthDate",
-        accessorFn: (row) =>
-            row.personalInformation.birthDate
-                .toDate()
-                .toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                }),
-        header: "Birth date",
-    },
-    {
-        id: "age",
-        accessorFn: (row) => row.personalInformation.age,
-        header: "Age",
-    },
-    {
-        id: "gender",
-        accessorFn: (row) => row.personalInformation.gender,
-        header: "Gender",
-    },
-    {
-        id: "civilStatus",
-        accessorFn: (row) => row.personalInformation.civilStatus,
-        header: "Civil status",
-    },
-    {
-        id: "phoneNumber",
-        accessorFn: (row) => row.personalInformation.phoneNumber,
-        header: "Phone number",
-    },
-    {
-        id: "landlineNumber",
-        accessorFn: (row) => row.personalInformation.landlineNumber,
-        header: "Landline number",
-    },
-    {
-        id: "email",
-        accessorFn: (row) => row.personalInformation.email,
-        header: "Email",
-    },
+    // {
+    //     id: "middleName",
+    //     header: "Middle name",
+    //     accessorFn: (row) => row.personalInformation.middleName,
+    // },
+    // {
+    //     id: "lastName",
+    //     header: "Last name",
+    //     accessorFn: (row) => row.personalInformation.lastName,
+    // },
+    // {
+    //     id: "address",
+    //     header: "Address",
+    //     accessorFn: (row) => row.personalInformation.address,
+    // },
+    // {
+    //     id: "birthDate",
+    //     accessorFn: (row) =>
+    //         row.personalInformation.birthDate
+    //             .toDate()
+    //             .toLocaleDateString("en-US", {
+    //                 year: "numeric",
+    //                 month: "long",
+    //                 day: "numeric",
+    //             }),
+    //     header: "Birth date",
+    // },
+    // {
+    //     id: "age",
+    //     accessorFn: (row) => row.personalInformation.age,
+    //     header: "Age",
+    // },
+    // {
+    //     id: "gender",
+    //     accessorFn: (row) => row.personalInformation.gender,
+    //     header: "Gender",
+    // },
+    // {
+    //     id: "civilStatus",
+    //     accessorFn: (row) => row.personalInformation.civilStatus,
+    //     header: "Civil status",
+    // },
+    // {
+    //     id: "phoneNumber",
+    //     accessorFn: (row) => row.personalInformation.phoneNumber,
+    //     header: "Phone number",
+    // },
+    // {
+    //     id: "landlineNumber",
+    //     accessorFn: (row) => row.personalInformation.landlineNumber,
+    //     header: "Landline number",
+    // },
+    // {
+    //     id: "email",
+    //     accessorFn: (row) => row.personalInformation.email,
+    //     header: "Email",
+    // },
 ];

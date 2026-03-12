@@ -85,6 +85,7 @@ function getPinnedStyles(column: any, isHeader = false): React.CSSProperties {
 
 function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
     const isActions = header.column.id === "actions";
+    const isSelect = header.column.id === "select";
     const pinnedStyles = getPinnedStyles(header.column, true);
 
     const {
@@ -125,7 +126,7 @@ function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
         >
             <div className="flex items-center gap-1 w-full">
                 {/* Drag handle */}
-                {!isActions && (
+                {!isActions && !isSelect && (
                     <GripVertical
                         size={16}
                         {...attributes}
@@ -168,7 +169,7 @@ export function DataTable<TData, TValue>({
 
     const [columnPinning, setColumnPinning] =
         React.useState<ColumnPinningState>({
-            left: ["actions", ""],
+            left: ["select", "actions"],
             right: [],
         });
 
@@ -279,7 +280,7 @@ export function DataTable<TData, TValue>({
                                                 column.toggleVisibility(!!value)
                                             }
                                         >
-                                            {column.id}
+                                            {column.columnDef.meta?.label ?? column.id}
                                         </DropdownMenuCheckboxItem>
                                     );
                                 })}

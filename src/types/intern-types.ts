@@ -112,6 +112,7 @@ export interface GSIS {
 
 export interface Applicant {
     id: string;
+    gipId: string;
     personalInformation: PersonalInformation;
     education: Education;
     workExperience: WorkExperience;

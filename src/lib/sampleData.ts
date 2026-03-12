@@ -4,6 +4,7 @@ import { Timestamp } from "firebase/firestore";
 export const sampleApplicant: Applicant[] = [
     {
         id: "1",
+        gipId: "GIP-001",
         personalInformation: {
             firstName: "Juan",
             middleName: "Dela",
@@ -119,6 +120,7 @@ export const sampleApplicant: Applicant[] = [
     },
     {
         id: "2",
+        gipId: "GIP-002",
         personalInformation: {
             firstName: "Pedro",
             middleName: "Fernando",
