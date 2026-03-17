@@ -280,7 +280,8 @@ export function DataTable<TData, TValue>({
                                                 column.toggleVisibility(!!value)
                                             }
                                         >
-                                            {column.columnDef.meta?.label ?? column.id}
+                                            {column.columnDef.meta?.label ??
+                                                column.id}
                                         </DropdownMenuCheckboxItem>
                                     );
                                 })}
@@ -288,7 +289,7 @@ export function DataTable<TData, TValue>({
                     </DropdownMenu>
                 </div>
                 <div className="overflow-x-auto rounded-md border">
-                    <Table className="min-w-full table-fixed border-separate border-spacing-0 [&_th]:border-b [&_th]:border-r [&_th:last-child]:border-r-0 [&_td]:border-b [&_td]:border-r [&_td:last-child]:border-r-0 [&_tr:last-child_td]:border-b-0">
+                    <Table className="min-w-full table-fixed ">
                         <TableHeader>
                             {table.getHeaderGroups().map((headerGroup) => (
                                 <SortableContext
