@@ -79,6 +79,28 @@ export const columns: ColumnDef<Applicant>[] = [
         enableHiding: false,
     },
     {
+        id: "expand",
+        cell: ({ row }) => {
+            return row.getCanExpand() ? (
+                <button
+                    onClick={row.getToggleExpandedHandler()}
+                    style={{ cursor: "pointer" }}
+                    type="button"
+                >
+                    {row.getIsExpanded() ? "👇" : "👉"}
+                </button>
+            ) : (
+                ""
+            );
+        },
+        size: 27, // 👈 small fixed width
+        minSize: 27,
+        maxSize: 27,
+        enableColumnFilter: false,
+        enableResizing: false,
+        enableHiding: false,
+    },
+    {
         id: "fullName",
         header: "Full name",
         accessorFn: (row) =>

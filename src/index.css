@@ -129,7 +129,7 @@
     body {
         @apply bg-background text-foreground;
     }
-    th[data-pinned],
+    /* th[data-pinned],
     td[data-pinned] {
         @apply bg-background;
         @apply bg-background transition-colors;
@@ -144,5 +144,5 @@
     }
     tr[data-state="selected"] td[data-pinned] {
         @apply bg-muted;
-    }
+    } */
 }

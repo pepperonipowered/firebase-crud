@@ -12,6 +12,7 @@ import {
     useReactTable,
     type Header,
     type ColumnPinningState,
+    getExpandedRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -73,6 +74,7 @@ function getPinnedStyles(column: any, isHeader = false): React.CSSProperties {
         zIndex: isHeader ? 20 : 10,
         // ✅ Replace divide-x with explicit borders on pinned columns
         borderRight: isLastLeft ? "1px solid var(--border)" : undefined,
+        // backgroundColor: "var(--row-bg, var(--background))",
         borderLeft: isFirstRight ? "1px solid var(--border)" : undefined,
         // Optional shadow for visual depth
         boxShadow: isLastLeft
@@ -86,6 +88,7 @@ function getPinnedStyles(column: any, isHeader = false): React.CSSProperties {
 function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
     const isActions = header.column.id === "actions";
     const isSelect = header.column.id === "select";
+    const isExpand = header.column.id === "expand";
     const pinnedStyles = getPinnedStyles(header.column, true);
 
     const {
@@ -97,7 +100,7 @@ function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
         isDragging,
     } = useSortable({
         id: header.column.id,
-        disabled: isActions || !!header.column.getIsPinned(), // Disable dragging for the "actions" column
+        disabled: isActions || isExpand || !!header.column.getIsPinned() , // Disable dragging for the "actions" column
     });
 
     const style: React.CSSProperties = {
@@ -126,7 +129,7 @@ function SortableHeader<TData>({ header }: { header: Header<TData, unknown> }) {
         >
             <div className="flex items-center gap-1 w-full">
                 {/* Drag handle */}
-                {!isActions && !isSelect && (
+                {!isActions && !isSelect && !isExpand && (
                     <GripVertical
                         size={16}
                         {...attributes}
@@ -169,8 +172,8 @@ export function DataTable<TData, TValue>({
 
     const [columnPinning, setColumnPinning] =
         React.useState<ColumnPinningState>({
-            left: ["select", "actions"],
-            right: [],
+            left: ["select",],
+            right: [ "actions", "expand"],
         });
 
     const table = useReactTable({
@@ -183,6 +186,8 @@ export function DataTable<TData, TValue>({
         getSortedRowModel: getSortedRowModel(),
         onColumnFiltersChange: setColumnFilters,
         getFilteredRowModel: getFilteredRowModel(),
+        getExpandedRowModel: getExpandedRowModel(),
+        getRowCanExpand: (row) => true,
         onColumnVisibilityChange: setColumnVisibility,
         onRowSelectionChange: setRowSelection,
         onColumnPinningChange: setColumnPinning,
@@ -320,34 +325,52 @@ export function DataTable<TData, TValue>({
                         <TableBody>
                             {table.getRowModel().rows?.length ? (
                                 table.getRowModel().rows.map((row) => (
-                                    <TableRow
-                                        key={row.id}
-                                        data-state={
-                                            row.getIsSelected() && "selected"
-                                        }
-                                    >
-                                        {row.getVisibleCells().map((cell) => (
-                                            <TableCell
-                                                key={cell.id}
-                                                style={{
-                                                    width: cell.column.getSize(),
-                                                    ...getPinnedStyles(
-                                                        cell.column,
-                                                        false,
-                                                    ),
-                                                }}
-                                                data-pinned={
-                                                    cell.column.getIsPinned() ||
-                                                    undefined
-                                                }
-                                            >
-                                                {flexRender(
-                                                    cell.column.columnDef.cell,
-                                                    cell.getContext(),
-                                                )}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
+                                    <React.Fragment key={row.id}>
+                                        <TableRow
+                                            key={row.id}
+                                            data-state={
+                                                row.getIsSelected() &&
+                                                "selected"
+                                            }
+                                            className=""
+                                        >
+                                            {row
+                                                .getVisibleCells()
+                                                .map((cell) => (
+                                                    <TableCell
+                                                        key={cell.id}
+                                                        style={{
+                                                            width: cell.column.getSize(),
+                                                            ...getPinnedStyles(
+                                                                cell.column,
+                                                                false,
+                                                            ),
+                                                        }}
+                                                        data-pinned={
+                                                            cell.column.getIsPinned() ||
+                                                            undefined
+                                                        }
+                                                    >
+                                                        {flexRender(
+                                                            cell.column
+                                                                .columnDef.cell,
+                                                            cell.getContext(),
+                                                        )}
+                                                    </TableCell>
+                                                ))}
+                                        </TableRow>
+                                        {row.getIsExpanded() && (
+                                            <TableRow>
+                                                <TableCell
+                                                    colSpan={
+                                                        row.getAllCells().length
+                                                    }
+                                                >
+                                                    Test details{" "}
+                                                </TableCell>
+                                            </TableRow>
+                                        )}
+                                    </React.Fragment>
                                 ))
                             ) : (
                                 <TableRow>
